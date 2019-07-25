@@ -4,7 +4,7 @@
 ## 准备工作
 * 一个大小合适的U盘:至少要大于5GB,因为操作系统的镜像一般在3G左右,所以大一些没毛病.同时要注意U盘里如果有重要东西要自己事先备份,因为之后制作U盘启动盘的时候会将U盘格式化!
 * UltralSO软件:这是制作启动盘的重要软件,我一般用这个,给出链接:
-* 下载好要安装的Ubuntu16.04操作系统的镜像: 可以去官网看看,下载.iso镜像文件.
+* 下载好要安装的Ubuntu16.04操作系统的镜像: 可以去[官网](https://cn.ubuntu.com/download)看看,也可以去[清华源](https://mirrors.tuna.tsinghua.edu.cn/ubuntu-releases/16.04/)下载镜像,如果电脑配置允许，推荐下载64位系统的镜像。
 ## 具体过程
 https://m.jb51.net/os/windows/565368.html
 https://segmentfault.com/a/1190000014523888
