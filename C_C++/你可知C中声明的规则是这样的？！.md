@@ -34,6 +34,37 @@ C语言中声明确定变量类型及初值,其语句成分如下:
 * 数组中不能包含函数, `foo[]()`非法.
 * 函数可返回指针,数组可以包含函数指针,数组也可以包含其他数组.
 # 四.声明的规则及解读方式
+对于C语言声明语句的解读,我们应当依据循序渐进的方式进行理解,通过一步步的解读来解析声明的内容,不过在具体解读之前,我们先看看理解C语言声明的优先级规则:
+
+| C语言声明的优先级规则 |
+| --- |
+| A. 声明应先从最左边的标识符开始读取,然后按照优先级顺序读取. |
+| B. 优先级从高至低: <br>  &emsp; B.1 声明中被括号括起来的部分 <br> &emsp; B.2 后缀操作符: <br> &emsp; &emsp; 括号()表示这是一个函数 <br> &emsp; &emsp; 方括号[]表示这是一个数组 <br> &emsp; B.3 前缀操作符: 星号*表示指向...的指针 |
+| C. 如果`const`或`volatile`关键字的后面紧跟类型说明符,那么它们作用于类型说明符,在其他情况下,`const`或`volatile`关键字作用于它左边的指针星号,表示指针是常量,如果左边是类型说明符也表示作用于类型说明符 |
+||||
+我们以一例声明进行分析: `char * const *(*next)()`
+![](pic2.png)
+声明解读的过程如下图示:
+![](pic1.png)
 
 # 五.问题的解决
+在介绍完声明解读规则后,我们以文章开头的例子进行解析: `void (*signal(int sig, void (*func)(int)))(int);`
+
+| 剩余的声明 | 采取的步骤 | 结果 |
+|--- | --- | --- |
+| `void (*signal(int sig, void (*func)(int)))(int);` | 第1步 | 从最左边标识符开始, `signal`是... |
+| `void (*` &emsp; &emsp; &emsp;` (int sig, void (*func)(int)))(int);` | 第2步 | 不匹配,进入下一步,表示`signal`是... |
+| `void (*`  &emsp; &emsp; &emsp; `(int sig, void (*func)(int)))(int);` | 第3步 | 与括号匹配, 括号内为参数, 所以`signal`是返回...的函数 |
+| `void (* `  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;  `)(int);` | 第4步 | 不匹配,表示`signal`是返回...的函数 |
+| `void (*`  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;  `)(int);` | 第5步 | 与星号匹配,表示`signal`是返回指针的函数,该指针指向... |
+| `void (` &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;   `)(int);` | 第4步 | 与"("匹配, 转入第2步 |
+| `void` &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; `(int);` | 第2步 | 步匹配,下一步 |
+| `void` &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; `(int);` | 第3步 | 与括号匹配, 表示`signal`是返回指针的函数,该指针指向返回...的函数 |
+| `void` &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; `;` | 第4步,第5步 | 都不匹配 |
+| `void` &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; `;` | 第6步 | 表示无类型 |
+对于函数的参数,我们可以同理解读,所以最后串起来读作: `signal`是返回函数指针的函数,该函数接受`int`及函数指针为参数,返回的函数指针指向无返回值的函数,该函数接受`int`参数.
 # 六.总结
+在我们了解声明的规则及解读过程后,我想对于声明的理解可以更上一层楼了.在解读声明时最重要的循序渐进,一点点抽丝剥茧将声明的内容展开,我想用这中方法,再难的声明也会变得清晰明了.
+## 参考文献
+<C专家编程>
+
