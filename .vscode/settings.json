@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "E:\\Anaconda3\\python.exe",
+    "python.pythonPath": "C:\\Users\\JD\\anaconda3\\python.exe",
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
     "python.linting.pycodestyleEnabled": false,
